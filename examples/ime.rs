@@ -9,6 +9,9 @@ use winit::{
     window::WindowBuilder,
 };
 
+#[path = "util/fill.rs"]
+mod fill;
+
 fn main() {
     SimpleLogger::new()
         .with_level(LevelFilter::Trace)
@@ -92,6 +95,9 @@ fn main() {
                     window.set_ime_allowed(ime_allowed);
                     println!("\nIME: {}\n", ime_allowed);
                 }
+            }
+            Event::RedrawRequested(_) => {
+                fill::fill_window(&window);
             }
             _ => (),
         }

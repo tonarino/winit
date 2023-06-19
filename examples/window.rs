@@ -8,6 +8,9 @@ use winit::{
     window::WindowBuilder,
 };
 
+#[path = "util/fill.rs"]
+mod fill;
+
 fn main() {
     let screen_number = std::env::args()
         .nth(1)
@@ -34,6 +37,9 @@ fn main() {
             } if window_id == window.id() => control_flow.set_exit(),
             Event::MainEventsCleared => {
                 window.request_redraw();
+            }
+            Event::RedrawRequested(_) => {
+                fill::fill_window(&window);
             }
             _ => (),
         }
