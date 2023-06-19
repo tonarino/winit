@@ -9,6 +9,9 @@ use winit::{
     window::WindowBuilder,
 };
 
+#[path = "util/fill.rs"]
+mod fill;
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum Mode {
     Wait,
@@ -93,7 +96,9 @@ fn main() {
                     control_flow.set_exit();
                 }
             }
-            Event::RedrawRequested(_window_id) => {}
+            Event::RedrawRequested(_window_id) => {
+                fill::fill_window(&window);
+            }
             Event::RedrawEventsCleared => {
                 match mode {
                     Mode::Wait => control_flow.set_wait(),

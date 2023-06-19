@@ -10,6 +10,9 @@ use winit::{
     window::{Fullscreen, WindowBuilder},
 };
 
+#[path = "util/fill.rs"]
+mod fill;
+
 fn main() {
     SimpleLogger::new().init().unwrap();
     let event_loop = EventLoop::new();
@@ -126,6 +129,9 @@ fn main() {
                 event: WindowEvent::CloseRequested,
                 window_id,
             } if window_id == window.id() => control_flow.set_exit(),
+            Event::RedrawRequested(_) => {
+                fill::fill_window(&window);
+            }
             _ => (),
         }
     });
