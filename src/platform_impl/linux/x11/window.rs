@@ -120,7 +120,10 @@ impl UnownedWindow {
         pl_attribs: PlatformSpecificWindowBuilderAttributes,
     ) -> Result<UnownedWindow, RootOsError> {
         let xconn = &event_loop.xconn;
-        let root = event_loop.root;
+        let root = match pl_attribs.screen_id {
+            Some(screen_id) => unsafe { (xconn.xlib.XRootWindow)(xconn.display, screen_id) },
+            None => event_loop.root,
+        };
 
         let mut monitors = xconn.available_monitors();
         let guessed_monitor = if monitors.is_empty() {

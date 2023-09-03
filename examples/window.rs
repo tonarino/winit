@@ -4,22 +4,28 @@ use simple_logger::SimpleLogger;
 use winit::{
     event::{Event, WindowEvent},
     event_loop::EventLoop,
+    platform::unix::WindowBuilderExtUnix,
     window::WindowBuilder,
 };
 
 fn main() {
-    SimpleLogger::new().init().unwrap();
+    let screen_number = std::env::args()
+        .nth(1)
+        .expect("please specify screen number to run on as first commandline argument")
+        .parse()
+        .expect("could not parse first commandline argument as i32");
+
+    SimpleLogger::new().env().init().unwrap();
     let event_loop = EventLoop::new();
 
-    let window = WindowBuilder::new()
+    let window_builder = WindowBuilder::new()
         .with_title("A fantastic window!")
-        .with_inner_size(winit::dpi::LogicalSize::new(128.0, 128.0))
-        .build(&event_loop)
-        .unwrap();
+        .with_inner_size(winit::dpi::LogicalSize::new(500.0, 500.0))
+        .with_x11_screen(screen_number);
+    let window = window_builder.build(&event_loop).unwrap();
 
     event_loop.run(move |event, _, control_flow| {
         control_flow.set_wait();
-        println!("{:?}", event);
 
         match event {
             Event::WindowEvent {
