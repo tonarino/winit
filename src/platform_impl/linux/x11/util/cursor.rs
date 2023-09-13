@@ -16,6 +16,7 @@ impl XConnection {
     fn create_empty_cursor(&self) -> ffi::Cursor {
         let data = 0;
         let pixmap = unsafe {
+            dbg!("XDefaultScreen called");
             let screen = (self.xlib.XDefaultScreen)(self.display);
             let window = (self.xlib.XRootWindow)(self.display, screen);
             (self.xlib.XCreateBitmapFromData)(self.display, window, &data, 1, 1)

@@ -574,6 +574,7 @@ impl<T> EventLoopWindowTarget<T> {
     pub fn raw_display_handle(&self) -> raw_window_handle::RawDisplayHandle {
         let mut display_handle = XlibDisplayHandle::empty();
         display_handle.display = self.xconn.display as *mut _;
+        dbg!("XDefaultScreen called");
         display_handle.screen =
             unsafe { (self.xconn.xlib.XDefaultScreen)(self.xconn.display as *mut _) };
         RawDisplayHandle::Xlib(display_handle)

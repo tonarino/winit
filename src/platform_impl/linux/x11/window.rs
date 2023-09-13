@@ -790,6 +790,7 @@ impl UnownedWindow {
     fn set_minimized_inner(&self, minimized: bool) -> util::Flusher<'_> {
         unsafe {
             if minimized {
+                dbg!("XDefaultScreen called");
                 let screen = (self.xconn.xlib.XDefaultScreen)(self.xconn.display);
 
                 (self.xconn.xlib.XIconifyWindow)(self.xconn.display, self.xwindow, screen);

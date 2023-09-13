@@ -69,6 +69,7 @@ impl XConnection {
             return None;
         }
 
+        dbg!("XDefaultScreen called");
         let screen = (self.xlib.XDefaultScreen)(self.display);
         let bit_depth = (self.xlib.XDefaultDepth)(self.display, screen);
 
