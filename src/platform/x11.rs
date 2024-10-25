@@ -150,6 +150,8 @@ pub trait WindowAttributesExtX11 {
 
     fn with_x11_screen(self, screen_id: i32) -> Self;
 
+    fn x11_screen(&self) -> Option<i32>;
+
     /// Build window with the given `general` and `instance` names.
     ///
     /// The `general` sets general class of `WM_CLASS(STRING)`, while `instance` set the
@@ -208,6 +210,10 @@ impl WindowAttributesExtX11 for WindowAttributes {
     fn with_x11_screen(mut self, screen_id: i32) -> Self {
         self.platform_specific.x11.screen_id = Some(screen_id);
         self
+    }
+
+    fn x11_screen(&self) -> Option<i32> {
+        self.platform_specific.x11.screen_id
     }
 
     #[inline]
