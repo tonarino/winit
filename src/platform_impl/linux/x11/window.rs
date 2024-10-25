@@ -226,7 +226,7 @@ impl UnownedWindow {
         // An iterator over all of the visuals combined with their depths.
         let roots = &xconn.xcb_connection().setup().roots;
         dbg!(roots);
-        let mut all_visuals = roots
+        let all_visuals: Vec<_> = roots
             .iter()
             .flat_map(|root| {
                 dbg!((root.root, root.root_visual, root.root_depth));
@@ -237,7 +237,9 @@ impl UnownedWindow {
                     dbg!((visual.visual_id, depth.depth));
                     (visual, depth.depth)
                 })
-            });
+            })
+            .collect();
+        let mut all_visuals = all_visuals.into_iter();
 
         // creating
         dbg!(window_attrs.platform_specific.x11.visual_id);
