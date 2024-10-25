@@ -314,6 +314,19 @@ impl UnownedWindow {
         let xwindow = {
             let (x, y) = position.map_or((0, 0), Into::into);
             let wid = leap!(xconn.xcb_connection().generate_id());
+            dbg!((
+                depth,
+                wid,
+                parent,
+                x,
+                y,
+                dimensions.0,
+                dimensions.1,
+                0,
+                xproto::WindowClass::INPUT_OUTPUT,
+                visual,
+                &window_attributes,
+            ));
             let result = xconn.xcb_connection().create_window(
                 depth,
                 wid,
