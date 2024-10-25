@@ -228,6 +228,7 @@ impl UnownedWindow {
         dbg!(roots);
         let all_visuals: Vec<_> = roots
             .iter()
+            .filter(|r| r.root == root)
             .flat_map(|root| {
                 dbg!((root.root, root.root_visual, root.root_depth));
                 &root.allowed_depths
