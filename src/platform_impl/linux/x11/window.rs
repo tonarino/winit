@@ -145,14 +145,18 @@ impl UnownedWindow {
         let xconn = &event_loop.xconn;
         let atoms = xconn.atoms();
         #[cfg(feature = "rwh_06")]
-        let root = match window_attrs.parent_window.as_ref().map(|handle| handle.0) {
+        let mut root = match window_attrs.parent_window.as_ref().map(|handle| handle.0) {
             Some(rwh_06::RawWindowHandle::Xlib(handle)) => handle.window as xproto::Window,
             Some(rwh_06::RawWindowHandle::Xcb(handle)) => handle.window.get(),
             Some(raw) => unreachable!("Invalid raw window handle {raw:?} on X11"),
             None => event_loop.root,
         };
         #[cfg(not(feature = "rwh_06"))]
-        let root = event_loop.root;
+        let mut root = event_loop.root;
+
+        if let Some(screen_id) = window_attrs.platform_specific.x11.screen_id {
+            root = unsafe { (xconn.xlib.XRootWindow)(xconn.display, screen_id) };
+        }
 
         let mut monitors = leap!(xconn.available_monitors());
         let guessed_monitor = if monitors.is_empty() {
