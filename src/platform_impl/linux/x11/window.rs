@@ -155,7 +155,8 @@ impl UnownedWindow {
         let mut root = event_loop.root;
 
         if let Some(screen_id) = window_attrs.platform_specific.x11.screen_id {
-            root = unsafe { (xconn.xlib.XRootWindow)(xconn.display, screen_id) };
+            root =
+                unsafe { (xconn.xlib.XRootWindow)(xconn.display, screen_id).try_into().unwrap() };
         }
 
         let mut monitors = leap!(xconn.available_monitors());
