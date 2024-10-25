@@ -224,16 +224,20 @@ impl UnownedWindow {
         };
 
         // An iterator over all of the visuals combined with their depths.
-        let mut all_visuals = xconn
-            .xcb_connection()
-            .setup()
-            .roots
+        let roots = &xconn.xcb_connection().setup().roots;
+        dbg!(roots);
+        let mut all_visuals = roots
             .iter()
             .flat_map(|root| {
                 dbg!((root.root, root.root_visual, root.root_depth));
                 &root.allowed_depths
             })
-            .flat_map(|depth| depth.visuals.iter().map(move |visual| (visual, depth.depth)));
+            .flat_map(|depth| {
+                depth.visuals.iter().map(move |visual| {
+                    dbg!((visual.visual_id, depth.depth));
+                    (visual, depth.depth)
+                })
+            });
 
         // creating
         dbg!(window_attrs.platform_specific.x11.visual_id);
