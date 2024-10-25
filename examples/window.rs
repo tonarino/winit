@@ -31,6 +31,7 @@ use winit::platform::macos::{OptionAsAlt, WindowAttributesExtMacOS, WindowExtMac
 use winit::platform::startup_notify::{
     self, EventLoopExtStartupNotify, WindowAttributesExtStartupNotify, WindowExtStartupNotify,
 };
+use winit::platform::x11::WindowAttributesExtX11;
 
 #[path = "util/tracing.rs"]
 mod tracing;
@@ -138,6 +139,13 @@ impl Application {
             startup_notify::reset_activation_token_env();
             info!("Using token {:?} to activate a window", token);
             window_attributes = window_attributes.with_activation_token(token);
+        }
+
+        #[cfg(x11_platform)]
+        if let Ok(screen_id_str) = std::env::var("X11_SCREEN_ID") {
+            info!("Trying to set X11 screen id {screen_id_str}");
+            let screen_id = screen_id_str.parse()?;
+            window_attributes = window_attributes.with_x11_screen(screen_id);
         }
 
         #[cfg(macos_platform)]
