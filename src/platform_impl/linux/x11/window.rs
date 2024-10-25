@@ -223,6 +223,7 @@ impl UnownedWindow {
             .setup()
             .roots
             .iter()
+            .filter(|r| r.root == root)
             .flat_map(|root| &root.allowed_depths)
             .flat_map(|depth| depth.visuals.iter().map(move |visual| (visual, depth.depth)));
 
