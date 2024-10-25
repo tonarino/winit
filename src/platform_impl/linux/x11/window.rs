@@ -229,10 +229,14 @@ impl UnownedWindow {
             .setup()
             .roots
             .iter()
-            .flat_map(|root| &root.allowed_depths)
+            .flat_map(|root| {
+                dbg!((root.root, root.root_visual, root.root_depth));
+                &root.allowed_depths
+            })
             .flat_map(|depth| depth.visuals.iter().map(move |visual| (visual, depth.depth)));
 
         // creating
+        dbg!(window_attrs.platform_specific.x11.visual_id);
         let (visualtype, depth, require_colormap) =
             match window_attrs.platform_specific.x11.visual_id {
                 Some(vi) => {
@@ -261,7 +265,9 @@ impl UnownedWindow {
                 },
                 _ => (None, x11rb::COPY_FROM_PARENT as _, false),
             };
+        dbg!(visualtype);
         let mut visual = visualtype.map_or(x11rb::COPY_FROM_PARENT, |v| v.visual_id);
+        dbg!(visual);
 
         let window_attributes = {
             use xproto::EventMask;
