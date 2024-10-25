@@ -154,10 +154,16 @@ impl UnownedWindow {
         #[cfg(not(feature = "rwh_06"))]
         let mut root = event_loop.root;
 
+        println!("Before:");
+        dbg!(&root);
+
         if let Some(screen_id) = window_attrs.platform_specific.x11.screen_id {
             root =
                 unsafe { (xconn.xlib.XRootWindow)(xconn.display, screen_id).try_into().unwrap() };
         }
+
+        println!("After:");
+        dbg!(&root);
 
         let mut monitors = leap!(xconn.available_monitors());
         let guessed_monitor = if monitors.is_empty() {
