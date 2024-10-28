@@ -70,6 +70,8 @@ changelog entry.
 - Add `PointerKind`, `PointerSource`, `ButtonSource`, `FingerId` and `position` to all pointer
   events as part of the pointer event overhaul.
 - Add `DeviceId::into_raw()` and `from_raw()`.
+- On X11, the `window` example now understands the `X11_VISUAL_ID` and `X11_SCREEN_ID` env
+  variables to test the respective modifiers of window creation.
 
 ### Changed
 
